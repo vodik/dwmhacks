@@ -1,0 +1,52 @@
+--- a/dwm.c	2009-09-28 03:20:23.000000000 +0800
++++ b/dwm.c	2010-03-10 01:55:42.507801441 +0800
+@@ -200,6 +200,7 @@
+ static void propertynotify(XEvent *e);
+ static void quit(const Arg *arg);
+ static void resize(Client *c, int x, int y, int w, int h, Bool interact);
++static void resize2(Client *c, int x, int y, int w, int h, Bool interact);
+ static void resizemouse(const Arg *arg);
+ static void restack(Monitor *m);
+ static void run(void);
+@@ -1228,7 +1229,7 @@
+ 					togglefloating(NULL);
+ 			}
+ 			if(!selmon->lt[selmon->sellt]->arrange || c->isfloating)
+-				resize(c, nx, ny, c->w, c->h, True);
++				resize2(c, nx, ny, c->w, c->h, True);
+ 			break;
+ 		}
+ 	} while(ev.type != ButtonRelease);
+@@ -1300,6 +1301,23 @@
+ 	XWindowChanges wc;
++	Monitor *m = c->mon;
+ 
+ 	if(applysizehints(c, &x, &y, &w, &h, interact)) {
++		c->x = wc.x = x + gappx;
++		c->y = wc.y = y + gappx;
++		c->w = wc.width = w - (x + w + (c->bw * 2) == m->mw ? 2 : 1) * gappx;
++		c->h = wc.height = h - (y + h + (c->bw * 2) == m->mh ? 2 : 1) * gappx;
++		wc.border_width = c->bw;
++		XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
++		configure(c);
++		XSync(dpy, False);
++	}
++}
++
++void
++resize2(Client *c, int x, int y, int w, int h, Bool interact) {
++	XWindowChanges wc;
++
++	if(applysizehints(c, &x, &y, &w, &h, interact)) {
+ 		c->x = wc.x = x;
+ 		c->y = wc.y = y;
+ 		c->w = wc.width = w;
+@@ -1347,7 +1364,7 @@
+ 					togglefloating(NULL);
+ 			}
+ 			if(!selmon->lt[selmon->sellt]->arrange || c->isfloating)
+-				resize(c, c->x, c->y, nw, nh, True);
++				resize2(c, c->x, c->y, nw, nh, True);
+ 			break;
+ 		}
+ 	} while(ev.type != ButtonRelease);
