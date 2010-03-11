@@ -51,11 +51,11 @@ static const Bool resizehints = False; /* True means respect size hints in tiled
 
 #include "nbalanced.c"
 static const Layout layouts[] = {
-	/* symbol     arrange function */
-	{ "=2]",      ntile },
-	{ "T2T",      nbstack },
-	{ "[M]",      monocle },
-	{ "><>",      NULL },    /* no layout function means floating behavior */
+	/* symbol     add gaps   arrange function */
+	{ "=2]",      True,      ntile },
+	{ "T2T",      True,      nbstack },
+	{ "[M]",      False,     monocle },
+	{ "><>",      False,     NULL },    /* no layout function means floating behavior */
 };
 
 /* key definitions */

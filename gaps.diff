@@ -1,52 +1,62 @@
---- a/dwm.c	2009-09-28 03:20:23.000000000 +0800
-+++ b/dwm.c	2010-03-10 01:55:42.507801441 +0800
-@@ -200,6 +200,7 @@
- static void propertynotify(XEvent *e);
- static void quit(const Arg *arg);
- static void resize(Client *c, int x, int y, int w, int h, Bool interact);
-+static void resize2(Client *c, int x, int y, int w, int h, Bool interact);
- static void resizemouse(const Arg *arg);
- static void restack(Monitor *m);
- static void run(void);
-@@ -1228,7 +1229,7 @@
- 					togglefloating(NULL);
- 			}
- 			if(!selmon->lt[selmon->sellt]->arrange || c->isfloating)
--				resize(c, nx, ny, c->w, c->h, True);
-+				resize2(c, nx, ny, c->w, c->h, True);
- 			break;
- 		}
- 	} while(ev.type != ButtonRelease);
-@@ -1300,6 +1301,23 @@
+--- a/config.def.h	2010-03-11 11:44:40.532769416 -0500
++++ b/config.def.h	2010-03-11 11:42:43.323124450 -0500
+@@ -9,6 +9,7 @@
+ static const char selbgcolor[]      = "#0066ff";
+ static const char selfgcolor[]      = "#ffffff";
+ static const unsigned int borderpx  = 1;        /* border pixel of windows */
++static const unsigned int gappx     = 4;
+ static const unsigned int snap      = 32;       /* snap pixel */
+ static const Bool showbar           = True;     /* False means no bar */
+ static const Bool topbar            = True;     /* False means bottom bar */
+@@ -27,10 +28,10 @@
+ static const Bool resizehints = True; /* True means respect size hints in tiled resizals */
+ 
+ static const Layout layouts[] = {
+-	/* symbol     arrange function */
+-	{ "[]=",      tile },    /* first entry is default */
+-	{ "><>",      NULL },    /* no layout function means floating behavior */
+-	{ "[M]",      monocle },
++	/* symbol     add gaps   arrange function */
++	{ "[]=",      True,      tile },    /* first entry is default */
++	{ "><>",      False,     NULL },    /* no layout function means floating behavior */
++	{ "[M]",      False,     monocle },
+ };
+ 
+ /* key definitions */
+--- a/dwm.c	2010-03-10 08:33:18.456664671 -0500
++++ b/dwm.c	2010-03-11 11:43:27.423119142 -0500
+@@ -117,6 +117,7 @@
+ 
+ typedef struct {
+ 	const char *symbol;
++	Bool addgaps;
+ 	void (*arrange)(Monitor *);
+ } Layout;
+ 
+@@ -469,7 +470,7 @@
+ void
+ cleanup(void) {
+ 	Arg a = {.ui = ~0};
+-	Layout foo = { "", NULL };
++	Layout foo = { "", 0, NULL };
+ 	Monitor *m;
+ 
+ 	view(&a);
+@@ -1298,12 +1299,13 @@
+ void
+ resize(Client *c, int x, int y, int w, int h, Bool interact) {
  	XWindowChanges wc;
-+	Monitor *m = c->mon;
++	unsigned int gap = c->isfloating ? 0 : (selmon->lt[selmon->sellt]->addgaps ? gappx : 0);
  
  	if(applysizehints(c, &x, &y, &w, &h, interact)) {
-+		c->x = wc.x = x + gappx;
-+		c->y = wc.y = y + gappx;
-+		c->w = wc.width = w - (x + w + (c->bw * 2) == m->mw ? 2 : 1) * gappx;
-+		c->h = wc.height = h - (y + h + (c->bw * 2) == m->mh ? 2 : 1) * gappx;
-+		wc.border_width = c->bw;
-+		XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
-+		configure(c);
-+		XSync(dpy, False);
-+	}
-+}
-+
-+void
-+resize2(Client *c, int x, int y, int w, int h, Bool interact) {
-+	XWindowChanges wc;
-+
-+	if(applysizehints(c, &x, &y, &w, &h, interact)) {
- 		c->x = wc.x = x;
- 		c->y = wc.y = y;
- 		c->w = wc.width = w;
-@@ -1347,7 +1364,7 @@
- 					togglefloating(NULL);
- 			}
- 			if(!selmon->lt[selmon->sellt]->arrange || c->isfloating)
--				resize(c, c->x, c->y, nw, nh, True);
-+				resize2(c, c->x, c->y, nw, nh, True);
- 			break;
- 		}
- 	} while(ev.type != ButtonRelease);
+-		c->x = wc.x = x;
+-		c->y = wc.y = y;
+-		c->w = wc.width = w;
+-		c->h = wc.height = h;
++		c->x = wc.x = x + gap;
++		c->y = wc.y = y + gap;
++		c->w = wc.width = w - (x + w + (c->bw * 2) == c->mon->mw ? 2 : 1) * gap;
++		c->h = wc.height = h - (y + h + (c->bw * 2) == c->mon->mh ? 2 : 1) * gap;
+ 		wc.border_width = c->bw;
+ 		XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
+ 		configure(c);
