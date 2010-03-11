@@ -54,7 +54,7 @@ static const Layout layouts[] = {
 	/* symbol     add gaps   arrange function */
 	{ "=2]",      True,      ntile },
 	{ "T2T",      True,      nbstack },
-	{ "[M]",      False,     monocle },
+	{ "[M]",      True,      monocle },
 	{ "><>",      False,     NULL },    /* no layout function means floating behavior */
 };
 

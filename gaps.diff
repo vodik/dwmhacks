@@ -55,8 +55,8 @@
 -		c->h = wc.height = h;
 +		c->x = wc.x = x + gap;
 +		c->y = wc.y = y + gap;
-+		c->w = wc.width = w - (x + w + (c->bw * 2) == c->mon->mw ? 2 : 1) * gap;
-+		c->h = wc.height = h - (y + h + (c->bw * 2) == c->mon->mh ? 2 : 1) * gap;
++		c->w = wc.width = w - (gap ? (x + w + (c->bw * 2) == c->mon->mw ? 2 : 1) * gap : 0);
++		c->h = wc.height = h - (gap ? (y + h + (c->bw * 2) == c->mon->mh ? 2 : 1) * gap : 0);
  		wc.border_width = c->bw;
  		XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
  		configure(c);
