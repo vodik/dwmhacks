@@ -10,13 +10,16 @@ static const char normfgcolor[]     = "#a6e22e";
 static const char selbordercolor[]  = "#070810";
 static const char selbgcolor[]      = "#161719";
 static const char selfgcolor[]      = "#5496ff";
+static const char urgbordercolor[]  = "#ff0066";
+static const char urgbgcolor[]      = "#ff0066";
+static const char urgfgcolor[]      = "#ffffff";
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
 
 /* settings for patches */
-static const int shade              = 90;
+static const unsigned int shade     = 90;
 static const unsigned int gappx     = 4;        /* gap pixel between windows */
 static const int nmaster            = 2;        /* default number of clients in the master area */
 
