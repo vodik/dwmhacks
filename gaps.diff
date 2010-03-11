@@ -38,7 +38,7 @@
  cleanup(void) {
  	Arg a = {.ui = ~0};
 -	Layout foo = { "", NULL };
-+	Layout foo = { "", 0, NULL };
++	Layout foo = { "", False, NULL };
  	Monitor *m;
  
  	view(&a);
@@ -46,7 +46,7 @@
  void
  resize(Client *c, int x, int y, int w, int h, Bool interact) {
  	XWindowChanges wc;
-+	unsigned int gap = c->isfloating ? 0 : (selmon->lt[selmon->sellt]->addgaps ? gappx : 0);
++	unsigned int gap = c->isfloating ? 0 : selmon->lt[selmon->sellt]->addgaps ? gappx : 0;
  
  	if(applysizehints(c, &x, &y, &w, &h, interact)) {
 -		c->x = wc.x = x;
