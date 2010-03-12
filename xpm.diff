@@ -1,0 +1,85 @@
+--- dwm-orig.c	2010-03-10 08:33:18.456664671 -0500
++++ dwm.c	2010-03-12 15:37:23.976026532 -0500
+@@ -36,6 +36,7 @@
+ #include <X11/Xlib.h>
+ #include <X11/Xproto.h>
+ #include <X11/Xutil.h>
++#include <X11/xpm.h>
+ #ifdef XINERAMA
+ #include <X11/extensions/Xinerama.h>
+ #endif /* XINERAMA */
+@@ -174,6 +175,7 @@
+ static void drawbars(void);
+ static void drawsquare(Bool filled, Bool empty, Bool invert, unsigned long col[ColLast]);
+ static void drawtext(const char *text, unsigned long col[ColLast], Bool invert);
++static void testdraw(unsigned long col[ColLast], Bool invert);
+ static void enternotify(XEvent *e);
+ static void expose(XEvent *e);
+ static void focus(Client *c);
+@@ -273,6 +275,15 @@
+ /* configuration, allows nested code to access above variables */
+ #include "config.h"
+ 
++typedef struct {
++	const char *id;
++	char const **data;
++} Pixmaps;
++
++#include "pixmaps.h"
++
++Pixmap pm[LENGTH(pixmaps) + 1];
++
+ /* compile-time check if all tags fit into an unsigned int bit array. */
+ struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
+ 
+@@ -698,7 +709,8 @@
+ 		dc.x += dc.w;
+ 	}
+ 	dc.w = blw = TEXTW(m->ltsymbol);
+-	drawtext(m->ltsymbol, dc.norm, False);
++	//drawtext(m->ltsymbol, dc.norm, False);
++	testdraw(dc.norm, False);
+ 	dc.x += dc.w;
+ 	x = dc.x;
+ 	if(m == selmon) { /* status is only drawn on selected monitor */
+@@ -756,6 +768,22 @@
+ }
+ 
+ void
++testdraw(unsigned long col[ColLast], Bool invert) {
++	int i, x, y, h, len, olen;
++	XRectangle r = { dc.x, dc.y, dc.w, dc.h };
++
++	XSetForeground(dpy, dc.gc, col[invert ? ColFG : ColBG]);
++	XFillRectangles(dpy, dc.drawable, dc.gc, &r, 1);
++
++	h = dc.font.ascent + dc.font.descent;
++	y = dc.y;// + (dc.h / 2) - (h / 2) + dc.font.ascent;
++	x = dc.x + (h / 2);
++
++	XSetForeground(dpy, dc.gc, col[invert ? ColBG : ColFG]);
++	XCopyArea(dpy, pm[0], dc.drawable, dc.gc, 0, 0, 16, 16, x, y);
++}
++
++void
+ drawtext(const char *text, unsigned long col[ColLast], Bool invert) {
+ 	char buf[256];
+ 	int i, x, y, h, len, olen;
+@@ -1475,6 +1503,7 @@
+ void
+ setup(void) {
+ 	XSetWindowAttributes wa;
++	unsigned int i;
+ 
+ 	/* clean up any zombies immediately */
+ 	sigchld(0);
+@@ -1497,6 +1526,9 @@
+ 	cursor[CurNormal] = XCreateFontCursor(dpy, XC_left_ptr);
+ 	cursor[CurResize] = XCreateFontCursor(dpy, XC_sizing);
+ 	cursor[CurMove] = XCreateFontCursor(dpy, XC_fleur);
++	/* init pixmaps */
++	for(i=0; i < LENGTH(pixmaps); i++)
++		XpmCreatePixmapFromData(dpy, root, (char **)pixmaps[i].data, &pm[i], NULL, NULL);
+ 	/* init appearance */
+ 	dc.norm[ColBorder] = getcolor(normbordercolor);
+ 	dc.norm[ColBG] = getcolor(normbgcolor);
