@@ -1,5 +1,5 @@
 --- a/dwm.c	2010-03-10 08:33:18.456664671 -0500
-+++ b/dwm.c	2010-03-13 15:08:22.923169966 -0500
++++ b/dwm.c	2010-03-13 15:16:23.241020743 -0500
 @@ -120,26 +120,6 @@
  	void (*arrange)(Monitor *);
  } Layout;
@@ -85,28 +85,27 @@
  
  	/* clean up any zombies immediately */
  	sigchld(0);
-@@ -1509,6 +1516,20 @@
+@@ -1509,6 +1516,19 @@
  	XSetLineAttributes(dpy, dc.gc, 1, LineSolid, CapButt, JoinMiter);
  	if(!dc.font.set)
  		XSetFont(dpy, dc.gc, dc.font.xfont->fid);
 +	/* init tags */
 +	for(m = mons; m; m = m->next) {
-+		m->curtag = m->prevtag = 1;
-+		/* init mfacts */
 +		if(!(m->mfacts = calloc(sizeof(double), numtags)))
 +			die("fatal: could not malloc() %u bytes\n", sizeof(double) * numtags);
-+		for(i = 0; i < numtags; i++)
-+			m->mfacts[i] = m->mfact;
-+		/* init layouts */
 +		if(!(m->lts = calloc(sizeof(Layout *), numtags)))
 +			die("fatal: could not malloc() %u bytes\n", sizeof(Layout *) * numtags);
-+		for(i = 0; i < numtags; i++)
++
++		m->curtag = m->prevtag = 1;
++		for(i = 0; i < numtags; i++) {
++			m->mfacts[i] = m->mfact;
 +			m->lts[i] = &layouts[0];
++		}
 +	}
  	/* init bars */
  	updatebars();
  	updatestatus();
-@@ -1640,12 +1661,25 @@
+@@ -1640,12 +1660,25 @@
  void
  toggletag(const Arg *arg) {
  	unsigned int newtags;
@@ -132,7 +131,7 @@
  		arrange(selmon);
  	}
  }
-@@ -1912,11 +1946,27 @@
+@@ -1912,11 +1945,27 @@
  
  void
  view(const Arg *arg) {
