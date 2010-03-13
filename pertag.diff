@@ -1,5 +1,5 @@
 --- a/dwm.c	2010-03-10 08:33:18.456664671 -0500
-+++ b/dwm.c	2010-03-12 13:37:45.242826502 -0500
++++ b/dwm.c	2010-03-13 15:08:22.923169966 -0500
 @@ -120,26 +120,6 @@
  	void (*arrange)(Monitor *);
  } Layout;
@@ -27,7 +27,7 @@
  typedef struct {
  	const char *class;
  	const char *instance;
-@@ -270,6 +250,31 @@
+@@ -270,6 +250,30 @@
  static Monitor *mons = NULL, *selmon = NULL;
  static Window root;
  
@@ -53,13 +53,12 @@
 +	int prevtag;
 +	const Layout **lts;
 +	double *mfacts;
-+	Bool *showbars;
 +};
 +
  /* configuration, allows nested code to access above variables */
  #include "config.h"
  
-@@ -1450,7 +1455,7 @@
+@@ -1450,7 +1454,7 @@
  	if(!arg || !arg->v || arg->v != selmon->lt[selmon->sellt])
  		selmon->sellt ^= 1;
  	if(arg && arg->v)
@@ -68,7 +67,7 @@
  	strncpy(selmon->ltsymbol, selmon->lt[selmon->sellt]->symbol, sizeof selmon->ltsymbol);
  	if(selmon->sel)
  		arrange(selmon);
-@@ -1468,13 +1473,15 @@
+@@ -1468,13 +1472,16 @@
  	f = arg->f < 1.0 ? arg->f + selmon->mfact : arg->f - 1.0;
  	if(f < 0.1 || f > 0.9)
  		return;
@@ -81,52 +80,33 @@
  setup(void) {
  	XSetWindowAttributes wa;
 +	Monitor *m;
-+	unsigned int i;
++	int numtags = LENGTH(tags) + 1;
++	int i;
  
  	/* clean up any zombies immediately */
  	sigchld(0);
-@@ -1509,7 +1516,31 @@
+@@ -1509,6 +1516,20 @@
  	XSetLineAttributes(dpy, dc.gc, 1, LineSolid, CapButt, JoinMiter);
  	if(!dc.font.set)
  		XSetFont(dpy, dc.gc, dc.font.xfont->fid);
 +	/* init tags */
-+	for(m=mons; m; m=m->next) {
-+		m->lts = malloc(sizeof(Layout *) * LENGTH(tags) + 1);
-+		m->mfacts = malloc(sizeof(double) * LENGTH(tags) + 1);
-+		m->showbars = malloc(sizeof(Bool) * LENGTH(tags) + 1);
++	for(m = mons; m; m = m->next) {
 +		m->curtag = m->prevtag = 1;
-+	}
-+	/* init mfacts */
-+	for(m=mons; m; m=m->next) {
-+		for(i=0; i < LENGTH(tags) + 1 ; i++) {
++		/* init mfacts */
++		if(!(m->mfacts = calloc(sizeof(double), numtags)))
++			die("fatal: could not malloc() %u bytes\n", sizeof(double) * numtags);
++		for(i = 0; i < LENGTH(tags) + 1; i++)
 +			m->mfacts[i] = m->mfact;
-+		}
-+	}
-+	/* init layouts */
-+	for(m=mons; m; m=m->next) {
-+		for(i=0; i < LENGTH(tags) + 1; i++) {
++		/* init layouts */
++		if(!(m->lts = calloc(sizeof(Layout *), numtags)))
++			die("fatal: could not malloc() %u bytes\n", sizeof(Layout *) * numtags);
++		for(i = 0; i < LENGTH(tags) + 1; i++)
 +			m->lts[i] = &layouts[0];
-+		}
 +	}
  	/* init bars */
-+	for(m=mons; m; m=m->next) {
-+		for(i=0; i < LENGTH(tags) + 1; i++) {
-+			m->showbars[i] = m->showbar;
-+		}
-+	}
  	updatebars();
  	updatestatus();
- 	/* EWMH support per view */
-@@ -1620,7 +1651,7 @@
- 
- void
- togglebar(const Arg *arg) {
--	selmon->showbar = !selmon->showbar;
-+	selmon->showbar = selmon->showbars[selmon->curtag] = !selmon->showbar;
- 	updatebarpos(selmon);
- 	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx, selmon->by, selmon->ww, bh);
- 	arrange(selmon);
-@@ -1640,12 +1671,27 @@
+@@ -1640,12 +1661,25 @@
  void
  toggletag(const Arg *arg) {
  	unsigned int newtags;
@@ -149,12 +129,10 @@
 +		selmon->sel->tags = newtags;
 +		selmon->lt[selmon->sellt] = selmon->lts[selmon->curtag];
 +		selmon->mfact = selmon->mfacts[selmon->curtag];
-+		if (selmon->showbar != selmon->showbars[selmon->curtag])
-+			togglebar(NULL);
  		arrange(selmon);
  	}
  }
-@@ -1912,11 +1958,29 @@
+@@ -1912,11 +1946,27 @@
  
  void
  view(const Arg *arg) {
@@ -180,8 +158,6 @@
 +	}
 +	selmon->lt[selmon->sellt]= selmon->lts[selmon->curtag];
 +	selmon->mfact = selmon->mfacts[selmon->curtag];
-+	if(selmon->showbar != selmon->showbars[selmon->curtag])
-+		togglebar(NULL);
  	arrange(selmon);
  }
  
