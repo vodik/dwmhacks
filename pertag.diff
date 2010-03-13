@@ -95,12 +95,12 @@
 +		/* init mfacts */
 +		if(!(m->mfacts = calloc(sizeof(double), numtags)))
 +			die("fatal: could not malloc() %u bytes\n", sizeof(double) * numtags);
-+		for(i = 0; i < LENGTH(tags) + 1; i++)
++		for(i = 0; i < numtags; i++)
 +			m->mfacts[i] = m->mfact;
 +		/* init layouts */
 +		if(!(m->lts = calloc(sizeof(Layout *), numtags)))
 +			die("fatal: could not malloc() %u bytes\n", sizeof(Layout *) * numtags);
-+		for(i = 0; i < LENGTH(tags) + 1; i++)
++		for(i = 0; i < numtags; i++)
 +			m->lts[i] = &layouts[0];
 +	}
  	/* init bars */
