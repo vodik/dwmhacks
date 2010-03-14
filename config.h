@@ -1,5 +1,4 @@
 /* See LICENSE file for copyright and license details. */
-
 #include <X11/XF86keysym.h>
 
 /* appearance */
@@ -18,20 +17,33 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
 
+static const float mfact      = 0.55;           /* factor of master area size [0.05..0.95] */
+static const Bool resizehints = False;           /* True means respect size hints in tiled resizals */
+
 /* settings for patches */
 static const unsigned int shade     = 90;
 static const unsigned int gappx     = 4;        /* gap pixel between windows */
 static const int nmaster            = 2;        /* default number of clients in the master area */
 
+/* layout(s) */
+#include "nbalanced.c"
+static const Layout layouts[] = {
+	/* symbol     add gaps   arrange function */
+	{ "=2]",      True,      ntile },
+	{ "T2T",      True,      nbstack },
+	{ "[M]",      True,      monocle },
+	{ "><>",      False,     NULL },    /* no layout function means floating behavior */
+};
+
 /* tagging */
 static const Tag tags[] = {
-	/* name    layout   mfact */
-	{ "term",  1,       -1   },
-	{ "dev",   0,       -1   },
-	{ "web",   2,       -1   },
-	{ "chat",  0,       0.70 },
-	{ "virt",  2,       -1   },
-	{ "misc",  0,       -1   },
+	/* name       layout           mfact */
+	{ "term",     &layouts[1],     -1   },
+	{ "dev",      &layouts[0],     -1   },
+	{ "web",      &layouts[2],     -1   },
+	{ "chat",     &layouts[0],     0.70 },
+	{ "virt",     &layouts[2],     -1   },
+	{ "misc",     &layouts[0],     -1   },
 };
 
 static const Rule rules[] = {
@@ -47,19 +59,6 @@ static const Rule rules[] = {
 	{ "Wine",           NULL,           NULL,           0,          True,       -1,      -1 },
 	{ "Nitrogen",       NULL,           NULL,           0,          True,       -1,      -1 },
 	{ "MPlayer",        NULL,           NULL,           0,          True,       -1,      -1 },
-};
-
-/* layout(s) */
-static const float mfact      = 0.55; /* factor of master area size [0.05..0.95] */
-static const Bool resizehints = False; /* True means respect size hints in tiled resizals */
-
-#include "nbalanced.c"
-static const Layout layouts[] = {
-	/* symbol     add gaps   arrange function */
-	{ "=2]",      True,      ntile },
-	{ "T2T",      True,      nbstack },
-	{ "[M]",      True,      monocle },
-	{ "><>",      False,     NULL },    /* no layout function means floating behavior */
 };
 
 /* key definitions */
