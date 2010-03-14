@@ -24,15 +24,20 @@ static const unsigned int gappx     = 4;        /* gap pixel between windows */
 static const int nmaster            = 2;        /* default number of clients in the master area */
 
 /* tagging */
-static const char *tags[] = { "term", "dev", "web", "chat", "virt", "misc" };
+static const Tag tags[] = {
+	/* name    layout   mfact */
+	{ "term",  0,       -1   },
+	{ "dev",   0,       -1   },
+	{ "web",   2,       -1   },
+	{ "chat",  0,       0.75 },
+	{ "virt",  2,       -1   },
+	{ "misc",  0,       -1   },
+};
 
 static const Rule rules[] = {
 	/* class            instance        title           tags mask   isfloating  monitor  opacity */
 	{ "Chromium",       NULL,           NULL,           1 << 2,     False,      -1,      -1 },
-
-	{ "Pidgin",         NULL,           NULL,           0,          True,       -1,      -1 },
-	{ "Pidgin",         NULL,           "Buddy List",   1 << 3,     True,       -1,      -1 },
-
+	{ "Pidgin",         NULL,           NULL,           1 << 3,     False,      -1,      -1 },
 	{ "VirtualBox",     NULL,           NULL,           1 << 4,     False,      -1,      -1 },
 
 	{ "Transmission",   NULL,           NULL,           1 << 5,     True,       -1,      -1 },
