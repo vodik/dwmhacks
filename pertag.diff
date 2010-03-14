@@ -160,15 +160,6 @@
  	/* init bars */
  	updatebars();
  	updatestatus();
-@@ -1599,7 +1627,7 @@
- 		return;
- 	/* master */
- 	c = nexttiled(m->clients);
--	mw = m->mfact * m->ww;
-+	mw = selmon->mfacts[selmon->curtag] * m->ww;
- 	resize(c, m->wx, m->wy, (n == 1 ? m->ww : mw) - 2 * c->bw, m->wh - 2 * c->bw, False);
- 	if(--n == 0)
- 		return;
 @@ -1640,12 +1669,25 @@
  void
  toggletag(const Arg *arg) {
