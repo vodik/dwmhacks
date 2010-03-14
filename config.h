@@ -26,10 +26,10 @@ static const int nmaster            = 2;        /* default number of clients in 
 /* tagging */
 static const Tag tags[] = {
 	/* name    layout   mfact */
-	{ "term",  0,       -1   },
+	{ "term",  1,       -1   },
 	{ "dev",   0,       -1   },
 	{ "web",   2,       -1   },
-	{ "chat",  0,       0.75 },
+	{ "chat",  0,       0.70 },
 	{ "virt",  2,       -1   },
 	{ "misc",  0,       -1   },
 };
@@ -41,7 +41,6 @@ static const Rule rules[] = {
 	{ "VirtualBox",     NULL,           NULL,           1 << 4,     False,      -1,      -1 },
 
 	{ "Transmission",   NULL,           NULL,           1 << 5,     True,       -1,      -1 },
-	{ "Transmission",   NULL,           "Transmission", 1 << 5,     True,       -1,      -1 },
 	{ "Gimp",           NULL,           NULL,           1 << 5,     True,       -1,      -1 },
 
 	{ "feh",            NULL,           NULL,           0,          True,       -1,      -1 },
