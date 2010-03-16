@@ -78,27 +78,26 @@ static const char history[]     = "/home/simongmzlj/.dmenu_history";
 #define ALSARATE "5%"
 
 /* commands */
-static const char *termcmd[]    = { "urxvtc", NULL };
-static const char *dmenucmd[]   = { "dmenu_run", "-hist", history, DMENUCONF, NULL };
-static const char *webcmd[]     = { "chromium", NULL };
-static const char *webpcmd[]    = { "chromium", "--incognito", NULL };
+static const char *termcmd[]      = { "urxvtc", NULL };
+static const char *dmenucmd[]     = { "dmenu_run", "-hist", history, DMENUCONF, NULL };
+static const char *webcmd[]       = { "chromium", NULL };
+static const char *webpcmd[]      = { "chromium", "--incognito", NULL };
 
-static const char *dmenunet[]   = { "sudo", "netcfg-dmenu", DMENUCONF, NULL };
-static const char *autonet[]    = { "sudo", "netcfg-wpa_actiond", "wlan0", NULL };
+static const char *dmenunet[]     = { "sudo", "netcfg-dmenu", DMENUCONF, NULL };
+static const char *autonet[]      = { "sudo", "netcfg-wpa_actiond", "wlan0", NULL };
 
-static const char *amixvolu[]   = { "amixer", "-c", "0", "-q", "set", ALSADEV, ALSARATE"+", "unmute", NULL };
-static const char *amixvold[]   = { "amixer", "-c", "0", "-q", "set", ALSADEV, ALSARATE"-", "unmute", NULL };
-static const char *amixvolm[]   = { "amixer", "-c", "0", "-q", "set", ALSADEV, "toggle", NULL };
+static const char *amixvolu[]     = { "amixer", "-c", "0", "-q", "set", ALSADEV, ALSARATE"+", "unmute", NULL };
+static const char *amixvold[]     = { "amixer", "-c", "0", "-q", "set", ALSADEV, ALSARATE"-", "unmute", NULL };
+static const char *amixvolm[]     = { "amixer", "-c", "0", "-q", "set", ALSADEV, "toggle",    NULL };
+static const char *amixmpdvolu[]  = { "amixer", "-c", "0", "-q", "set", "MPD",   ALSARATE"+", "unmute", NULL };
+static const char *amixmpdvold[]  = { "amixer", "-c", "0", "-q", "set", "MPD",   ALSARATE"-", "unmute", NULL };
+static const char *amixmpdvolm[]  = { "amixer", "-c", "0", "-q", "set", "MPD",   "toggle",    NULL };
 
-static const char *amixmpdvolu[]   = { "amixer", "-c", "0", "-q", "set", "MPD", ALSARATE"+", "unmute", NULL };
-static const char *amixmpdvold[]   = { "amixer", "-c", "0", "-q", "set", "MPD", ALSARATE"-", "unmute", NULL };
-static const char *amixmpdvolm[]   = { "amixer", "-c", "0", "-q", "set", "MPD", "toggle", NULL };
-
-static const char *audioplay[]  = { "mpc", "toggle", NULL };
-static const char *audiostop[]  = { "mpc", "stop", NULL };
-static const char *audiopause[] = { "mpc", "pause", NULL };
-static const char *audionext[]  = { "mpc", "next", NULL };
-static const char *audioprev[]  = { "mpc", "prev", NULL };
+static const char *audioplay[]    = { "mpc", "toggle", NULL };
+static const char *audiostop[]    = { "mpc", "stop", NULL };
+static const char *audiopause[]   = { "mpc", "pause", NULL };
+static const char *audionext[]    = { "mpc", "next", NULL };
+static const char *audioprev[]    = { "mpc", "prev", NULL };
 
 #include "push.c"
 #include "opacity.c"
