@@ -115,15 +115,15 @@
  		} while(ev->x >= x && ++i < LENGTH(tags));
  		if(i < LENGTH(tags)) {
  			click = ClkTagBar;
-@@ -477,6 +487,8 @@
- 	for(m = mons; m; m = m->next)
- 		while(m->stack)
- 			unmanage(m->stack, False);
-+		free(m->mfacts);
-+		free(m->lts);
- 	if(dc.font.set)
- 		XFreeFontSet(dpy, dc.font.set);
- 	else
+@@ -505,6 +515,8 @@
+ 	}
+ 	XUnmapWindow(dpy, mon->barwin);
+ 	XDestroyWindow(dpy, mon->barwin);
++	free(m->mfacts);
++	free(m->lts);
+ 	free(mon);
+ }
+ 
 @@ -603,19 +615,30 @@
  	XSync(dpy, False);
  }
