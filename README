@@ -18,7 +18,7 @@
 
  gaps.diff:
   - Adds gaps around the edges of windows correctly. Doesn't break on floating
-    windows, doesn't add a double with gap inbetween windows. Can be enabled
+    windows, doesn't add a double with gap in between windows. Can be enabled
     per layout.
 
  opacity.c, opacity.diff:
@@ -29,6 +29,11 @@
   - Changes the tile arranger to a modified non-greedy ntile, adds pertag mfact,
     nmaster, and layouts, and the ability to configure individual pertag
     defaults. nbstack.c is a bstack variant of ntile.
+
+ pidgin.c:
+  - Special arranger for my chat tag. If it finds the contact list it puts it
+    to the right of the mfact divide. All other windows are stacked
+    horizontally in the remaining space.
 
  tagmon.diff:
   - Rereads Rules and retags a window if its moved between monitors.
