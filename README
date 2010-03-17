@@ -1,0 +1,37 @@
+== dwm patches and hacks ==
+
+ WARNING: Use these patches with extreme cation. With the compiling of these
+ patches you are entering the edge of full-fledged fork territory. What started
+ out as a collection of patches has ended up getting so intertwined and
+ inseparable that one patch now may be adding several new features. I've also
+ has issues managing all the associated config.h.def diffs so I've dropped them.
+ 
+ SOME OF MY PATCHES WILL BREAK YOUR CODE - I DO NOT MAINTAIN ANY BACKWARDS
+ COMPARABILITY
+
+ Use these patches at your own risk. I use these regularity on a one and two
+ monitor setup.
+
+ cycle.c:
+  - Adds the ability to cycles through the tagset one at a time. Allows you
+    to pull the currency focused window with you too.
+
+ gaps.diff:
+  - Adds gaps around the edges of windows correctly. Doesn't break on floating
+    windows.
+
+ opacity.c, opacity.diff:
+  - Makes unfocused windows shade. Allows for setting individual window
+    transparency.
+
+ pertag2.c, nbstack.c:
+  - Changes the tile arrange to a modified non-greedy ntile, adds pertag mfact,
+    nmaster, and layouts, and the ability to configure individual pertag
+    defaults. nbstack.c is a bstack variant of ntite.
+
+ tagmon.diff:
+  - Rereads Rules and retags a window if its moved between monitors
+
+ push.c:
+  - As found here: http://dwm.suckless.org/patches/push. Here for archival
+    purposes
