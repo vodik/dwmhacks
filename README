@@ -5,7 +5,7 @@
  out as a collection of patches has ended up getting so intertwined and
  inseparable that one patch now may be adding several new features. I've also
  has issues managing all the associated config.h.def diffs so I've dropped them.
- 
+
  SOME OF MY PATCHES WILL BREAK YOUR CODE - I DO NOT MAINTAIN ANY BACKWARDS
  COMPARABILITY
 
@@ -14,27 +14,28 @@
 
  cycle.c:
   - Adds the ability to cycles through the tagset one at a time. Allows you
-    to pull the currency focused window with you too.
+    to pull the currency focused window along with you too.
 
  gaps.diff:
   - Adds gaps around the edges of windows correctly. Doesn't break on floating
-    windows.
+    windows, doesn't add a double with gap inbetween windows. Can be enabled
+    per layout.
 
  opacity.c, opacity.diff:
   - Makes unfocused windows shade. Allows for setting individual window
     transparency.
 
  pertag2.diff, nbstack.c:
-  - Changes the tile arrange to a modified non-greedy ntile, adds pertag mfact,
+  - Changes the tile arranger to a modified non-greedy ntile, adds pertag mfact,
     nmaster, and layouts, and the ability to configure individual pertag
-    defaults. nbstack.c is a bstack variant of ntite.
+    defaults. nbstack.c is a bstack variant of ntile.
 
  tagmon.diff:
-  - Rereads Rules and retags a window if its moved between monitors
+  - Rereads Rules and retags a window if its moved between monitors.
 
  push.c:
   - As found here: http://dwm.suckless.org/patches/push. Here for archival
-    purposes
+    purposes.
 
  config.diff:
-  - Build dwm with the -O2 flag instead of the -Os flag
+  - Build dwm with the -O2 flag instead of the -Os flag.
