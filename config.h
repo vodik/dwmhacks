@@ -26,7 +26,7 @@ static const unsigned int gappx     = 4;        /* gap pixel between windows */
 static const int nmaster            = 2;        /* default number of clients in the master area */
 
 /* layout(s) */
-#include "nbalanced.c"
+#include "nbstack.c"
 static const Layout layouts[] = {
 	/* symbol     add gaps   arrange function */
 	{ "=2]",      True,      ntile },
@@ -37,13 +37,13 @@ static const Layout layouts[] = {
 
 /* tagging */
 static const Tag tags[] = {
-	/* name       layout           mfact */
-	{ "term",     &layouts[1],     -1   },
-	{ "dev",      &layouts[0],     -1   },
-	{ "web",      &layouts[2],     -1   },
-	{ "chat",     &layouts[0],     0.70 },
-	{ "virt",     &layouts[2],     -1   },
-	{ "misc",     &layouts[0],     -1   },
+	/* name       layout           mfact    nmaster */
+	{ "term",     &layouts[1],     -1,      -1 },
+	{ "dev",      &layouts[0],     -1,      -1 },
+	{ "web",      &layouts[2],     -1,      -1 },
+	{ "chat",     &layouts[0],     0.70,    -1 },
+	{ "virt",     &layouts[2],     -1,      -1 },
+	{ "misc",     &layouts[0],     -1,      -1 },
 };
 
 static const Rule rules[] = {

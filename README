@@ -24,7 +24,7 @@
   - Makes unfocused windows shade. Allows for setting individual window
     transparency.
 
- pertag2.c, nbstack.c:
+ pertag2.diff, nbstack.c:
   - Changes the tile arrange to a modified non-greedy ntile, adds pertag mfact,
     nmaster, and layouts, and the ability to configure individual pertag
     defaults. nbstack.c is a bstack variant of ntite.
