@@ -35,3 +35,6 @@
  push.c:
   - As found here: http://dwm.suckless.org/patches/push. Here for archival
     purposes
+
+ config.diff:
+  - Build dwm with the -O2 flag instead of the -Os flag

@@ -1,0 +1,11 @@
+--- a/config.mk	2010-03-17 12:19:04.261576102 -0400
++++ b/config.mk	2010-03-17 12:20:00.731553921 -0400
+@@ -21,7 +21,7 @@
+ # flags
+ CPPFLAGS = -DVERSION=\"${VERSION}\" ${XINERAMAFLAGS}
+ #CFLAGS = -g -std=c99 -pedantic -Wall -O0 ${INCS} ${CPPFLAGS}
+-CFLAGS = -std=c99 -pedantic -Wall -Os ${INCS} ${CPPFLAGS}
++CFLAGS = -std=c99 -pedantic -Wall -O2 ${INCS} ${CPPFLAGS}
+ #LDFLAGS = -g ${LIBS}
+ LDFLAGS = -s ${LIBS}
+ 
