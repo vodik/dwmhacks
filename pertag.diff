@@ -119,8 +119,8 @@
  	}
  	XUnmapWindow(dpy, mon->barwin);
  	XDestroyWindow(dpy, mon->barwin);
-+	free(m->mfacts);
-+	free(m->lts);
++	free(mon->mfacts);
++	free(mon->lts);
  	free(mon);
  }
  
