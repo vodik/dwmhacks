@@ -2,7 +2,7 @@ static const char wmname[] = "Buddy List";
 
 static void
 pidgin(Monitor *m) {
-	int x, y, h, w, mw;
+	int x, y, h, w, ww;
 	unsigned int i, n;
 	Client *c, *mk = 0;
 
@@ -12,17 +12,17 @@ pidgin(Monitor *m) {
 	if(n == 0)
 		return;
 	/* master */
-	mw = m->mfacts[m->curtag] * m->ww;
+	ww = m->mfacts[m->curtag] * m->ww;
 	if(mk) {
-		resize(mk, m->mx + mw, m->my + (topbar ? bh : 0), m->mw - mw - 2 * mk->bw, m->wh - 2 * mk->bw - (topbar ? bh : 0), False);
+		resize(mk, m->wx + ww, m->wy, m->ww - ww - 2 * mk->bw, m->wh - 2 * mk->bw, False);
 		strncpy(m->ltsymbol, "==P", sizeof m->ltsymbol);
 		if(--n == 0)
 			return;
 	}
 	/* tile stack */
-	x = m->mx;
-	y = topbar ? m->my + bh : m->my;
-	w = mk ? mw : m->ww;
+	x = m->wx;
+	y = m->wy;
+	w = mk ? ww : m->ww;
 	h = m->wh / n;
 	if(h < bh)
 		h = m->wh;
