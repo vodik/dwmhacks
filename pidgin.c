@@ -22,8 +22,8 @@ pidgin(Monitor *m) {
 	/* tile stack */
 	x = m->wx;
 	y = m->wy;
-	w = mk ? ww : m->ww;
-	h = m->wh / n;
+	w = (mk ? ww : m->ww) / n;
+	h = m->wh;
 	if(h < bh)
 		h = m->wh;
 	for(i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
@@ -31,9 +31,11 @@ pidgin(Monitor *m) {
 			--i;
 			continue;
 		}
-		resize(c, x, y, w - 2 * c->bw,
-		       ((i + 1 == n) ? m->wy + m->wh - y : h) - 2 * c->bw, False);
-		if(h != m->wh)
-			y = c->y + HEIGHT(c);
+		/*resize(c, x, y, w - 2 * c->bw,
+		       ((i + 1 == n) ? m->wy + m->wh - y : h) - 2 * c->bw, False);*/
+		resize(c, x, y, ((i + 1 == n) ? m->mx + (mk ? ww : m->ww) - x : w) - 2 * c->bw,
+		       h - 2 * c->bw, False);
+		if(w != m->ww)
+			x = c->x + WIDTH(c);
 	}
 }
