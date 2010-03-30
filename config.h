@@ -42,7 +42,7 @@ static const Tag tags[] = {
 	/* name       layout           mfact    nmaster */
 	{ "term",     &layouts[1],     -1,      -1 },
 	{ "dev",      &layouts[0],     -1,      -1 },
-	{ "web",      &layouts[2],     -1,      -1 },
+	{ "web",      &layouts[2],     -1,      1  },
 	{ "chat",     &layouts[4],     0.75,    -1 },
 	{ "virt",     &layouts[2],     -1,      -1 },
 	{ "misc",     &layouts[0],     -1,      -1 },
