@@ -15,10 +15,10 @@ static const char urgfgcolor[]      = "#ffffff";
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
-static const Bool topbar            = True;     /* False means bottom bar */
+static const Bool topbar            = False;    /* False means bottom bar */
 
-static const float mfact      = 0.55;           /* factor of master area size [0.05..0.95] */
-static const Bool resizehints = False;           /* True means respect size hints in tiled resizals */
+static const float mfact            = 0.55;           /* factor of master area size [0.05..0.95] */
+static const Bool resizehints       = False;           /* True means respect size hints in tiled resizals */
 
 /* settings for patches */
 static const unsigned int shade     = 90;
@@ -27,12 +27,14 @@ static const int nmaster            = 2;        /* default number of clients in 
 
 /* layout(s) */
 #include "nbstack.c"
+#include "pidgin.c"
 static const Layout layouts[] = {
 	/* symbol     add gaps   arrange function */
 	{ "=2]",      True,      ntile },
 	{ "T2T",      True,      nbstack },
 	{ "[M]",      True,      monocle },
 	{ "><>",      False,     NULL },    /* no layout function means floating behavior */
+	{ "==:",      True,      pidgin },
 };
 
 /* tagging */
@@ -41,7 +43,7 @@ static const Tag tags[] = {
 	{ "term",     &layouts[1],     -1,      -1 },
 	{ "dev",      &layouts[0],     -1,      -1 },
 	{ "web",      &layouts[2],     -1,      -1 },
-	{ "chat",     &layouts[0],     0.70,    -1 },
+	{ "chat",     &layouts[4],     0.75,    -1 },
 	{ "virt",     &layouts[2],     -1,      -1 },
 	{ "misc",     &layouts[0],     -1,      -1 },
 };
@@ -55,6 +57,7 @@ static const Rule rules[] = {
 	{ "Transmission",   NULL,           NULL,           1 << 5,     True,       -1,      -1 },
 	{ "Gimp",           NULL,           NULL,           1 << 5,     True,       -1,      -1 },
 
+	{ "xfce4-notifyd",  NULL,           NULL,           0,          True,       -1,      -1 },
 	{ "feh",            NULL,           NULL,           0,          True,       -1,      -1 },
 	{ "Wine",           NULL,           NULL,           0,          True,       -1,      -1 },
 	{ "Nitrogen",       NULL,           NULL,           0,          True,       -1,      -1 },
@@ -71,7 +74,7 @@ static const Rule rules[] = {
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 static const char history[]     = "/home/simongmzlj/.dmenu_history";
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+#define SHCMD(cmd) { .v = (const char*[]){ "/bin/dash", "-c", cmd, NULL } }
 #define DMENUCONF "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor
 
 #define ALSADEV "Master"
@@ -94,10 +97,10 @@ static const char *amixmpdvold[]  = { "amixer", "-c", "0", "-q", "set", "MPD",  
 static const char *amixmpdvolm[]  = { "amixer", "-c", "0", "-q", "set", "MPD",   "toggle",    NULL };
 
 static const char *audioplay[]    = { "mpc", "toggle", NULL };
-static const char *audiostop[]    = { "mpc", "stop", NULL };
-static const char *audiopause[]   = { "mpc", "pause", NULL };
-static const char *audionext[]    = { "mpc", "next", NULL };
-static const char *audioprev[]    = { "mpc", "prev", NULL };
+static const char *audiostop[]    = { "mpc", "stop",   NULL };
+static const char *audiopause[]   = { "mpc", "pause",  NULL };
+static const char *audionext[]    = { "mpc", "next",   NULL };
+static const char *audioprev[]    = { "mpc", "prev",   NULL };
 
 #include "push.c"
 #include "opacity.c"
@@ -120,6 +123,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_z,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_x,      setnmaster,     {.i = 2 } },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_n,      setlayout,      {.v = &layouts[3]} },
+	{ MODKEY|ShiftMask,             XK_n,      setlayout,      {.v = &layouts[4]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
@@ -140,7 +145,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 
-    /* my keybindings */
+	/* my keybindings */
 	{ MODKEY,                       XK_w,      spawn,          {.v = dmenunet } },
 	{ MODKEY|ShiftMask,             XK_w,      spawn,          {.v = autonet } },
 	{ MODKEY|ShiftMask,             XK_j,      pushdown,       {0} },
